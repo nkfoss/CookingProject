@@ -9,6 +9,8 @@ export class RecipeService {
     'https://minimalistbaker.com/wp-content/uploads/2017/09/AMAZING-Coconut-Curried-Golden-Lentils-20-minutes-healthy-SO-satisfying-vegan-lentil-curry-plantbased-coconut-dairyfree-glutenfree-11.jpg'),
   ];
 
+  // ===========================================================================================================================
+
   getRecipes() {
 
     // return this.recipes;

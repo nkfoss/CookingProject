@@ -1,8 +1,11 @@
 import { Recipe } from './recipe.model'
+import { EventEmitter } from '@angular/core';
 
 export class RecipeService {
 
-  recipes: Recipe[] = [
+  recipeSelected = new EventEmitter<Recipe>();
+
+  private recipes: Recipe[] = [
     new Recipe('Homemade chicken breast', 'mmmm yum',
     'https://www.spendwithpennies.com/wp-content/uploads/2018/08/SpendWithPennies-Oven-Baked-Chicken-Breast-22.jpg'),
     new Recipe('Coconut curry lentils', 'Spicy bois',

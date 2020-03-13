@@ -12,6 +12,7 @@ import { RecipeItemComponent } from './RecipeBook/recipe-list/recipe-item/recipe
 import { RecipeDetailComponent } from './RecipeBook/recipe-detail/recipe-detail.component';
 import { HeaderComponent } from './Header/header.component';
 import { RecipesComponent } from './RecipeBook/recipes.component';
+import { ShoppingListService } from './ShoppingList/shopping-list.service';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,7 @@ import { RecipesComponent } from './RecipeBook/recipes.component';
     BrowserModule,
     FormsModule
   ],
-  providers: [],
+  providers: [ShoppingListService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

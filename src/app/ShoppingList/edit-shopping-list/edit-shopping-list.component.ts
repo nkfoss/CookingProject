@@ -18,6 +18,10 @@ export class EditShoppingListComponent implements OnInit {
     const ingAmount = this.amountInputRef.nativeElement.value;
     const newIngredient = new Ingredient(ingName, "null", ingAmount);
     this.shoppinglistService.addIngredient(newIngredient)
+
+    // Now reset the fields. (I know I'm not supposed to access the elements directly like this)
+    this.nameInputRef.nativeElement.value = "";
+    this.amountInputRef.nativeElement.value = "";
   }
 
   constructor(private shoppinglistService: ShoppingListService) { }

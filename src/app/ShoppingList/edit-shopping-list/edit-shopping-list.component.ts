@@ -16,7 +16,7 @@ export class EditShoppingListComponent implements OnInit {
   onAddIngredient() {
     const ingName = this.nameInputRef.nativeElement.value;
     const ingAmount = this.amountInputRef.nativeElement.value;
-    const newIngredient = new Ingredient(ingName, ingAmount);
+    const newIngredient = new Ingredient(ingName, "null", ingAmount);
     this.shoppinglistService.addIngredient(newIngredient)
   }
 

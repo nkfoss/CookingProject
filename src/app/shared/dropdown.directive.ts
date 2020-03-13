@@ -7,7 +7,6 @@ export class DropdownDirective {
 
   @HostBinding('class.open') openStatus = false;
 
-
   @HostListener('click') click(eventData: Event) {
     this.openStatus = !this.openStatus;
   }
@@ -16,8 +15,6 @@ export class DropdownDirective {
   @HostListener('focusout') focusout() {
     this.openStatus = false;
   }
-
   constructor(private elRef: ElementRef) {}
-
 
 }

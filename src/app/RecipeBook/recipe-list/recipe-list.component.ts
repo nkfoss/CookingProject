@@ -9,7 +9,7 @@ import { RecipeService } from '../recipes.service';
 })
 export class RecipeListComponent implements OnInit {
 
-  @Output() recipePassedUp = new EventEmitter<Recipe>();
+  recipes: Recipe[];
 
   recipes: Recipe[];
 

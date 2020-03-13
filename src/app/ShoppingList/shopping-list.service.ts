@@ -23,7 +23,7 @@ export class ShoppingListService {
         // for (let ingredient of ingredients) {
         //     this.addIngredient(ingredient)
         // }
-        
+
         // ^ Looping thru is okay, but can emit ALOT of events. Not necessary
         // Instead, we use the 'spread' method (denoted with three dots '...')
         // This turns the array into a list, and we can then push it properly.

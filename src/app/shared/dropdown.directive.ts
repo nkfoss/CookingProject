@@ -12,9 +12,9 @@ export class DropdownDirective {
   }
 
   // Basically, this says if you click anywhere else in the document to change the focus, then it closes.
-  @HostListener('focusout') focusout() {
-    this.openStatus = false;
-  }
+  // @HostListener('focusout') focusout() {
+  //   this.openStatus = false;
+  // }
   constructor(private elRef: ElementRef) {}
 
 }

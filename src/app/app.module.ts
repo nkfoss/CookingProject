@@ -24,7 +24,8 @@ import { ShoppingListService } from './ShoppingList/shopping-list.service';
     RecipeItemComponent,
     RecipeDetailComponent,
     RecipesComponent,
-    DropdownDirective
+    DropdownDirective,
+
   ],
   imports: [
     BrowserModule,

@@ -22,11 +22,7 @@ export class RecipeDetailComponent implements OnInit {
   }
 
   onUpdateShoppingList() {
-<<<<<<< HEAD
-    console.log("maa")
-=======
     console.log("maaa");
->>>>>>> master
     this.recipeService.addToShoppingList(this.recipe.ingredients);
   }
 

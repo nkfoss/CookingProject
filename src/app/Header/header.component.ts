@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
     selector: 'app-header',
@@ -6,11 +6,5 @@ import { Component, EventEmitter, Output } from '@angular/core';
 })
 export class HeaderComponent {
 
-  // This decorator allows to listen to this event from the parent component.
-  // Check out the app component HTML at featureSelected="onNavigate()"
-  @Output() featureSelected = new EventEmitter<string>();
 
-  onSelect(feature: string) {
-    this.featureSelected.emit(feature);
-  }
 }

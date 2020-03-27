@@ -5,10 +5,9 @@ import { Directive, HostBinding, ElementRef,  HostListener } from '@angular/core
 })
 export class DropdownDirective {
 
-  @HostBinding('class.open') openStatus = false;
-
-  @HostListener('click') click(eventData: Event) {
-    this.openStatus = !this.openStatus;
+  @HostBinding('class.open') isOpen = false;
+  @HostListener('click') toggleOpen() {
+    this.isOpen = !this.isOpen;
   }
 
   // Basically, this says if you click anywhere else in the document to change the focus, then it closes.

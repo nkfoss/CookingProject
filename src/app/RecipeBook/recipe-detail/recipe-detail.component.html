@@ -13,20 +13,15 @@
 </div>
 <div class=row>
     <div class="col-xs-12">
-        <button type="button" class="btn btn-danger" (click) = "onUpdateShoppingList()">
-            Add to shopping list
-        </button>
-    </div>
-    <div class="col-xs-12">
-        <div appDropdown >
+        <div appDropdown>
             <button type="button" class="btn btn-primary dropdown-toggle">
                 Manage Recipe
             <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
-                <li><a (click)="onUpdateShoppingList()"> Add to Shopping list </a></li>
-                <li><a href="#"> Edit Recipe </a></li>
-                <li><a href="#"> Delete Recipe </a></li>
+                <li><a style="cursor: pointer" (click)="onUpdateShoppingList()"> Add to Shopping list </a></li>
+                <li><a style="cursor: pointer"> Edit Recipe </a></li>
+                <li><a style="cursor: pointer"> Delete Recipe </a></li>
             </ul>
         </div>
     </div>

@@ -5,9 +5,11 @@
     <hr>
     <div class="row">
         <div class="col-xs-12">
-            <app-recipe-item *ngFor="let recipeIt of recipes; let i = index"
+            <!-- Remember, the keyword for ngFor is 'index', but that's also the variable name
+                we are binding to for the child component. Don't get it confused. -->
+            <app-recipe-item *ngFor="let recipeIt of recipes; let qwe = index"
             [recipe]="recipeIt"
-            [index]="index">
+            [index]="qwe">
         </app-recipe-item>
         </div>
     </div>

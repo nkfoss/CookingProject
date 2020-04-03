@@ -10,7 +10,15 @@ import { RecipeService } from '../recipes.service';
 export class RecipeListComponent implements OnInit {
   recipes: Recipe[];
 
+<<<<<<< Updated upstream
   // ==============================================================
+=======
+  recipes: Recipe[];
+
+  onRecipeSelected(recipe: Recipe) {
+    this.recipeService
+  }
+>>>>>>> Stashed changes
 
   constructor(private recipeService: RecipeService) { }
 

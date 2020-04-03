@@ -3,7 +3,17 @@
         <app-recipe-list></app-recipe-list>
     </div>
     <div class="col-md-7">
+<<<<<<< Updated upstream
        <router-outlet> </router-outlet>
+=======
+        <app-recipe-detail
+        *ngIf="selectedRecipe; else placeholder"
+        [passedDownRecipe]="passedUpRecipe"></app-recipe-detail>
+        <ng-template #placeholder>
+          <!-- ng-template is what shows up by default if passedUpRecipe is falsy -->
+          <p> Please select a recipe</p>
+        </ng-template>
+>>>>>>> Stashed changes
     </div>
 
 </div>

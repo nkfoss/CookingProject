@@ -1,8 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Recipe } from '../recipe.model';
-import { ShoppingListService } from 'src/app/ShoppingList/shopping-list.service';
-import { Ingredient } from 'src/app/shared/ingredient.model';
 import { RecipeService } from '../recipes.service';
+import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
   selector: 'app-recipe-detail',
@@ -14,15 +13,24 @@ import { RecipeService } from '../recipes.service';
 // You can also edit or delete the details. MOST IMPORTANT: You can add it to your shopping list.
 
 export class RecipeDetailComponent implements OnInit {
-  @Input() recipe: Recipe;
+  recipe: Recipe;
+  id: number;
 
-  constructor(private recipeService: RecipeService) { }
+  constructor(
+    private recipeService: RecipeService, 
+    private activatedRoute : ActivatedRoute
+    ) {}
 
   ngOnInit() {
+    this.activatedRoute.params.subscribe (
+      (params: Params) => {
+        this.id = +params['id'];
+        this.recipe = this.recipeService.getRecipe(this.id);
+      }
+    )
   }
 
   onUpdateShoppingList() {
-    console.log("maaa");
     this.recipeService.addToShoppingList(this.recipe.ingredients);
   }
 

@@ -6,14 +6,16 @@ import { RecipeDetailComponent } from './RecipeBook/recipe-detail/recipe-detail.
 import { EditRecipeComponent } from './RecipeBook/edit-recipe/edit-recipe.component'
 import { EditShoppingListComponent } from './ShoppingList/edit-shopping-list/edit-shopping-list.component'
 import { NotFoundComponent } from './not-found/not-found.component'
+import { RecipeStartComponent } from './RecipeBook/recipe-start/recipe-start.component'
 
 const appRoutes: Routes = [
 
     {path: '#', redirectTo: '/recipes', pathMatch: 'full' },
     { path: 'recipes', component: RecipesComponent,
     children: [
-        { path: ':name/details', component: RecipeDetailComponent},
-        { path: ':name/edit', component: EditRecipeComponent} ]
+        { path: '', component: RecipeStartComponent },
+        { path: ':id', component: RecipeDetailComponent}
+    ]
     },
 
     { path: 'shopping-list', component: ShoppingListComponent,

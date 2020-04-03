@@ -1,5 +1,4 @@
 import { Recipe } from './recipe.model'
-<<<<<<< Updated upstream
 import { EventEmitter, Injectable } from '@angular/core';
 import { Ingredient } from '../shared/ingredient.model';
 import { ShoppingListService } from '../ShoppingList/shopping-list.service';
@@ -70,32 +69,3 @@ export class RecipeService {
   }
 
 }
-=======
-import { EventEmitter } from '@angular/core';
-
-export class RecipeService {
-
-    recipeSelected = new EventEmitter<Recipe>();
-
-    private recipes: Recipe[] = [
-        new Recipe('Homemade chicken breast', 'mmmm yum',
-        'https://www.spendwithpennies.com/wp-content/uploads/2018/08/SpendWithPennies-Oven-Baked-Chicken-Breast-22.jpg'),
-        new Recipe('Coconut curry lentils', 'Spicy bois',
-        'https://minimalistbaker.com/wp-content/uploads/2017/09/AMAZING-Coconut-Curried-Golden-Lentils-20-minutes-healthy-SO-satisfying-vegan-lentil-curry-plantbased-coconut-dairyfree-glutenfree-11.jpg'),
-      ];
-
-      getRecipes() {
-          // This use of slice return a COPY of the array.
-          // Simply returning the array would give us the exact instance.
-          // We don't want this. That's why we made it private.
-          return this.recipes.slice();
-      }
-
-      selectRecipe() {
-
-      }
-
-    
-
-}
->>>>>>> Stashed changes

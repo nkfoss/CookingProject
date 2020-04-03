@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 import { Ingredient } from "../shared/ingredient.model"
 import { EventEmitter } from '@angular/core'
 
@@ -34,8 +33,3 @@ export class ShoppingListService {
         this.ingredientsUpdated.emit( this.getIngredients() )
     }
 }
-=======
-export class ShoppingListService{
-    
-}
->>>>>>> Stashed changes

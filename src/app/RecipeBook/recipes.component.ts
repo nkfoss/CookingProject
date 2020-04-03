@@ -11,7 +11,6 @@ import { RecipeService } from './recipes.service';
 export class RecipesComponent implements OnInit {
 
   selectedRecipe: Recipe;
-<<<<<<< Updated upstream
 
   // ==============================================================
 
@@ -19,15 +18,6 @@ export class RecipesComponent implements OnInit {
 
   ngOnInit() {
     this.recipeService.recipeSelected.subscribe(
-=======
-  constructor(private recipeService: RecipeService) { 
-
-   }
-
-  ngOnInit() {
-    this.recipeService.recipeSelected
-    .subscribe(
->>>>>>> Stashed changes
       (recipe: Recipe) => {
         this.selectedRecipe = recipe
       }

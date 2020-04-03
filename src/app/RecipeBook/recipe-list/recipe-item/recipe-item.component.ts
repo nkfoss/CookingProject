@@ -9,15 +9,8 @@ import { RecipeService } from '../../recipes.service';
 })
 export class RecipeItemComponent implements OnInit {
   @Input() recipe: Recipe;
-<<<<<<< Updated upstream
   @Input() index: number;
 
-=======
-
-  onSelect(recipeName: string) {
-    this.recipeService.recipeSelected.emit(this.recipe);
-  }
->>>>>>> Stashed changes
 
   constructor(private recipeService: RecipeService) { }
 

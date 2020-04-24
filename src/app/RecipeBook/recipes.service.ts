@@ -1,13 +1,14 @@
+import { Injectable } from '@angular/core';
+
 import { Recipe } from './recipe.model'
-import { EventEmitter, Injectable } from '@angular/core';
 import { Ingredient } from '../shared/ingredient.model';
 import { ShoppingListService } from '../ShoppingList/shopping-list.service';
 
+
+// ==============================================================
+
 @Injectable()
-
 export class RecipeService {
-
-  recipeSelected = new EventEmitter<Recipe>();
 
   private recipes: Recipe[] = [
     new Recipe('Homemade chicken breast',
@@ -39,11 +40,15 @@ export class RecipeService {
     ])
   ];
 
-  // ===========================================================================================================================
+  // ========================================================
+
+  constructor(private shoppingListService: ShoppingListService) {}
+
+  // ========================================================
 
   getRecipes() {
 
-    // return this.recipes;
+    // Returns all the recipes;
 
     // We don't implement it this way, because arrays are 'reference-types' in JS.
     // That means if another component gets this recipe list, and edits it, then the recipe list HERE
@@ -62,10 +67,6 @@ export class RecipeService {
   addToShoppingList(ingredients: Ingredient[]) {
     this.shoppingListService.addIngredients(ingredients);
     console.log("adding to the SL service...")
-  }
-
-  constructor(private shoppingListService: ShoppingListService) {
-
   }
 
 }

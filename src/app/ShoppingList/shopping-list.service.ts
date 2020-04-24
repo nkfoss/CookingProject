@@ -1,9 +1,9 @@
 import { Ingredient } from "../shared/ingredient.model"
-import { EventEmitter } from '@angular/core'
+import { Subject } from 'rxjs'
 
 export class ShoppingListService {
 
-    ingredientsUpdated = new EventEmitter<Ingredient[]>();
+    ingredientsUpdated = new Subject<Ingredient[]>(); // For use with the shopping-list comp.
 
     private ingredients: Ingredient[] = [
         new Ingredient('Apples', 'whole', 5),
@@ -15,21 +15,12 @@ export class ShoppingListService {
     }
 
     addIngredient(ingredient: Ingredient) {
-        this.ingredients.push(ingredient);
-        this.ingredientsUpdated.emit( this.getIngredients() )
+        this.ingredients.push(ingredient);                    // Update ingredient list
+        this.ingredientsUpdated.next( this.getIngredients() ) // Send out an update
     }
 
     addIngredients(ingredients: Ingredient[]) {
-        // for (let ingredient of ingredients) {
-        //     this.addIngredient(ingredient)
-        // }
-
-        // ^ Looping thru is okay, but can emit ALOT of events. Not necessary
-        // Instead, we use the 'spread' method (denoted with three dots '...')
-        // This turns the array into a list, and we can then push it properly.
-        // If we try to push the array, it will get added as a single unit. Not good.
-
-        this.ingredients.push(...ingredients);
-        this.ingredientsUpdated.emit( this.getIngredients() )
+        this.ingredients.push(...ingredients);                // Update ingredient list
+        this.ingredientsUpdated.next( this.getIngredients() ) // Send out the update
     }
 }

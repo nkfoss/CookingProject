@@ -1,14 +1,19 @@
+import { Subject } from 'rxjs'
+
 import { Ingredient } from "../shared/ingredient.model"
-import { EventEmitter } from '@angular/core'
+
+// ==========================================================
 
 export class ShoppingListService {
 
-    ingredientsUpdated = new EventEmitter<Ingredient[]>();
+    ingredientsUpdated = new Subject<Ingredient[]>();
 
     private ingredients: Ingredient[] = [
         new Ingredient('Apples', 'whole', 5),
         new Ingredient('Tomatoes', 'whole', 10),
       ];
+
+      // ==========================================================
 
     getIngredients() {
         return this.ingredients.slice();
@@ -16,7 +21,7 @@ export class ShoppingListService {
 
     addIngredient(ingredient: Ingredient) {
         this.ingredients.push(ingredient);
-        this.ingredientsUpdated.emit( this.getIngredients() )
+        this.ingredientsUpdated.next( this.getIngredients() )
     }
 
     addIngredients(ingredients: Ingredient[]) {
@@ -30,6 +35,7 @@ export class ShoppingListService {
         // If we try to push the array, it will get added as a single unit. Not good.
 
         this.ingredients.push(...ingredients);
-        this.ingredientsUpdated.emit( this.getIngredients() )
+        this.ingredientsUpdated.next( this.getIngredients() )
     }
+    
 }

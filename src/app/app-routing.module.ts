@@ -1,5 +1,6 @@
 import { NgModule } from "@angular/core"
 import { Routes, RouterModule } from "@angular/router"
+
 import { RecipesComponent } from './RecipeBook/recipes.component'
 import { ShoppingListComponent } from './ShoppingList/shopping-list.component'
 import { RecipeDetailComponent } from './RecipeBook/recipe-detail/recipe-detail.component'
@@ -7,6 +8,8 @@ import { EditRecipeComponent } from './RecipeBook/edit-recipe/edit-recipe.compon
 import { EditShoppingListComponent } from './ShoppingList/edit-shopping-list/edit-shopping-list.component'
 import { NotFoundComponent } from './not-found/not-found.component'
 import { RecipeStartComponent } from './RecipeBook/recipe-start/recipe-start.component'
+
+// ==========================================================
 
 const appRoutes: Routes = [
 
@@ -17,8 +20,7 @@ const appRoutes: Routes = [
         { path: 'new', component: EditRecipeComponent },
         { path: ':id', component: RecipeDetailComponent},
         { path: ':id/edit', component: EditRecipeComponent }
-    ]
-    },
+    ]},
 
     // Also make sure dynamic parameters come after static paramter routes
 
@@ -31,10 +33,14 @@ const appRoutes: Routes = [
     { path: '**', redirectTo: '/recipes'}
 ]
 
+// ==========================================================
+
 @NgModule({
     imports: [ RouterModule.forRoot(appRoutes)],
     exports: [ RouterModule ]
 })
+
+// ==========================================================
 
 export class AppRoutingModule {
 

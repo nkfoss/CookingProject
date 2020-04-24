@@ -1,15 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router'
+
 import { Recipe } from '../recipe.model'
 import { RecipeService } from '../recipes.service';
-
 
 @Component({
   selector: 'app-recipe-list',
   templateUrl: './recipe-list.component.html',
   styleUrls: ['./recipe-list.component.css']
 })
+
+// ==============================================================
+
 export class RecipeListComponent implements OnInit {
+
   recipes: Recipe[];
 
   // ==============================================================
@@ -25,7 +29,6 @@ export class RecipeListComponent implements OnInit {
   // ==============================================================
 
   onNewRecipe() {
-
     // This function just adds 'new' to our CURRENT route (hence the use of 'relativeTo')
     this.router.navigate(['new'], {relativeTo: this.activatedRoute} )
   }

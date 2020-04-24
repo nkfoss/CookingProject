@@ -3,6 +3,8 @@ import { Directive, HostBinding, ElementRef,  HostListener } from '@angular/core
 @Directive({
   selector: '[appDropdown]'
 })
+
+// ==============================================================
 export class DropdownDirective {
 
   @HostBinding('class.open') isOpen = false;
@@ -14,6 +16,9 @@ export class DropdownDirective {
   // @HostListener('focusout') focusout() {
   //   this.openStatus = false;
   // }
+
+  // ==============================================================
+  
   constructor(private elRef: ElementRef) {}
 
 }

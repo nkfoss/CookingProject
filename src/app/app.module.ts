@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { DropdownDirective } from './shared/dropdown.directive';
-
 import { AppComponent } from './app.component';
 import { ShoppingListComponent } from './ShoppingList/shopping-list.component';
 import { EditShoppingListComponent } from './ShoppingList/edit-shopping-list/edit-shopping-list.component';
@@ -41,4 +40,5 @@ import { RecipeStartComponent } from './RecipeBook/recipe-start/recipe-start.com
   providers: [ShoppingListService],
   bootstrap: [AppComponent]
 })
+
 export class AppModule { }

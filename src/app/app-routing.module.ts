@@ -14,9 +14,13 @@ const appRoutes: Routes = [
     { path: 'recipes', component: RecipesComponent,
     children: [
         { path: '', component: RecipeStartComponent },
-        { path: ':id', component: RecipeDetailComponent}
+        { path: 'new', component: EditRecipeComponent },
+        { path: ':id', component: RecipeDetailComponent},
+        { path: ':id/edit', component: EditRecipeComponent }
     ]
     },
+
+    // Also make sure dynamic parameters come after static paramter routes
 
     { path: 'shopping-list', component: ShoppingListComponent,
     children: [

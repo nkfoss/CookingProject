@@ -40,18 +40,20 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-xs-12">
-                    <div class="row">
+                <div class="col-xs-12" formArrayName="ingredients">
+                    <div class="row" 
+                    *ngFor="let ingredientCtrl of controls; let i = index"
+                    [formGroupName]="i">
                         <div class="col-xs-8">
-                            <input type="text" id="ingredient" class="form-control">
+                            <input type="text" id="ingredient" class="form-control" formControlName="name">
                             <label for="ingredient">Ingredient</label>
                         </div>
                         <div class="col-xs-2">
-                            <input type="number" id="amount" class="form-control">
+                            <input type="number" id="amount" class="form-control" formControlName="amount">
                             <label for="amount">Amount</label>
                         </div>
                         <div class="col-xs-2">
-                            <button class="btn btn-danger">X</button>
+                            <button type="button" class="btn btn-danger">X</button>
                         </div>
                     </div>
                 </div>

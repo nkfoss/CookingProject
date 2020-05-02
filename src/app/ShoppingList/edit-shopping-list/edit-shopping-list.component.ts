@@ -19,19 +19,25 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
   editingSubscription: Subscription;
   editedItemIndex: number;
   editedItem: Ingredient;
+
+  // Originally, its assumed you're not updating ingredients.
+  // When the editingSubscription gets an update (ie: when you select an ingredient
+  // in the list), then editMode becomes true.
   editMode = false;
-  
+
   //=========================================================================
 
   constructor(private shoppinglistService: ShoppingListService) { }
 
   ngOnInit() {
+    // This subscription receives the index of the shopping list item to be edited
     this.editingSubscription = this.shoppinglistService.startedEditing.subscribe(
       (index: number) => {
         this.editedItemIndex = index;
         this.editMode = true;
         this.editedItem = this.shoppinglistService.getIngredient(index);
-        this.ingredientForm.setValue({
+
+        this.ingredientForm.setValue({  // Now fill the form with the selected ingredient
           itemName: this.editedItem.name,
           amount: this.editedItem.amount,
           unit: this.editedItem.unit
@@ -46,21 +52,39 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
 
   //==============================================================================  
 
+  // This function both Adds and updates existing ingredients
   onAddIngredient() {
-    console.log(this.ingredientForm)
 
+    // Get form information and create new ingredient object
     const ingName = this.ingredientForm.value.itemName;
     const ingAmount = this.ingredientForm.value.amount;
     const ingUnit = this.ingredientForm.value.unit;
     const newIngredient = new Ingredient(ingName, ingUnit, ingAmount);
-    this.shoppinglistService.addIngredient(newIngredient)
 
-    this.ingredientForm.reset();
+    // If updating, replace the old ingredient.
+    if (this.editMode) {
+      this.shoppinglistService.updateIngredient(this.editedItemIndex, newIngredient);
+    } else {
+      this.shoppinglistService.addIngredient(newIngredient) // Otherwise append the new ingredient
+    }
 
-    // ~~OLD~~
-    // Now reset the fields. (I know I'm not supposed to access the elements directly like this)
+    this.onClear(); // Always 'clear' and reset editMode when finished
+
+    // ~~Alternative way to reset the fields~~ (I know I'm not supposed to access the elements directly like this)
     // this.nameInputRef.nativeElement.value = "";
     // this.amountInputRef.nativeElement.value = "";
+  }
+
+  // This both clears the form...
+  // ...and sets editmode = false (so we can back out of editing an existing item).
+  onClear() {
+    this.editMode = false;
+    this.ingredientForm.reset();
+  }
+
+  onDeleteIngredient() {
+     this.shoppinglistService.deleteIngredient(this.editedItemIndex);
+     this.onClear()
   }
 
 

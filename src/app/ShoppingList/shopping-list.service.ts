@@ -15,12 +15,12 @@ export class ShoppingListService {
 
       // ==========================================================
 
-    getIngredients() {
-        return this.ingredients.slice();
-    }
-
     getIngredient(index: number) {
         return this.ingredients[index];
+    }
+
+    getIngredients() {
+        return this.ingredients.slice();
     }
 
     updateIngredient(index: number, ingredient: Ingredient) {
@@ -35,7 +35,7 @@ export class ShoppingListService {
 
     addIngredient(ingredient: Ingredient) {
         this.ingredients.push(ingredient);
-        this.ingredientsUpdated.next( this.getIngredients() )
+        this.ingredientsUpdated.next( this.ingredients.slice() )
     }
 
     addIngredients(ingredients: Ingredient[]) {
@@ -49,7 +49,7 @@ export class ShoppingListService {
         // If we try to push the array, it will get added as a single unit. Not good.
 
         this.ingredients.push(...ingredients);
-        this.ingredientsUpdated.next( this.getIngredients() )
+        this.ingredientsUpdated.next( this.ingredients.slice() )
     }
     
 }

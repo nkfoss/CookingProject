@@ -1,7 +1,9 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 
 import { Ingredient } from 'src/app/shared/ingredient.model';
 import { ShoppingListService } from '../shopping-list.service';
+import { NgForm } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-edit-shopping-list',
@@ -11,31 +13,82 @@ import { ShoppingListService } from '../shopping-list.service';
 
 // ==============================================================
 
-export class EditShoppingListComponent implements OnInit {
+export class EditShoppingListComponent implements OnInit, OnDestroy {
 
+  @ViewChild('ingredientForm', { static: false }) ingredientForm: NgForm;
+  editingSubscription: Subscription;
+  editedItemIndex: number;
+  editedItem: Ingredient;
 
-  @ViewChild('nameInput', {static:false}) nameInputRef: ElementRef;
-  @ViewChild('amountInput', {static:false}) amountInputRef: ElementRef;
+  // Originally, its assumed you're not updating ingredients.
+  // When the editingSubscription gets an update (ie: when you select an ingredient
+  // in the list), then editMode becomes true.
+  editMode = false;
 
-  // ==============================================================
-  
+  //=========================================================================
+
   constructor(private shoppinglistService: ShoppingListService) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    // This subscription receives the index of the shopping list item to be edited
+    this.editingSubscription = this.shoppinglistService.startedEditing.subscribe(
+      (index: number) => {
+        this.editedItemIndex = index;
+        this.editMode = true;
+        this.editedItem = this.shoppinglistService.getIngredient(index);
 
-  // ==============================================================
-  
-  onAddIngredient() {
-    const ingName = this.nameInputRef.nativeElement.value;
-    const ingAmount = this.amountInputRef.nativeElement.value;
-    const newIngredient = new Ingredient(ingName, "null", ingAmount);
-    this.shoppinglistService.addIngredient(newIngredient)
-
-    // Now reset the fields. (I know I'm not supposed to access the elements directly like this)
-    this.nameInputRef.nativeElement.value = "";
-    this.amountInputRef.nativeElement.value = "";
+        this.ingredientForm.setValue({  // Now fill the form with the selected ingredient
+          itemName: this.editedItem.name,
+          amount: this.editedItem.amount,
+          unit: this.editedItem.unit
+        })
+      }
+    );
   }
 
-  
+  ngOnDestroy() {
+    this.editingSubscription.unsubscribe();
+  }
+
+  //==============================================================================  
+
+  // This function both Adds and updates existing ingredients
+  onAddIngredient() {
+
+    // Get form information and create new ingredient object
+    const ingName = this.ingredientForm.value.itemName;
+    const ingAmount = this.ingredientForm.value.amount;
+    const ingUnit = this.ingredientForm.value.unit;
+    const newIngredient = new Ingredient(ingName, ingUnit, ingAmount);
+
+    // If updating, replace the old ingredient.
+    if (this.editMode) {
+      this.shoppinglistService.updateIngredient(this.editedItemIndex, newIngredient);
+    } else {
+      this.shoppinglistService.addIngredient(newIngredient) // Otherwise append the new ingredient
+    }
+
+    this.onClear(); // Always 'clear' and reset editMode when finished
+
+    // ~~Alternative way to reset the fields~~ (I know I'm not supposed to access the elements directly like this)
+    // this.nameInputRef.nativeElement.value = "";
+    // this.amountInputRef.nativeElement.value = "";
+  }
+
+  // This both clears the form...
+  // ...and sets editmode = false (so we can back out of editing an existing item).
+  onClear() {
+    this.editMode = false;
+    this.ingredientForm.reset();
+  }
+
+  onDeleteIngredient() {
+     this.shoppinglistService.deleteIngredient(this.editedItemIndex);
+     this.onClear()
+  }
+
+
+
+
 
 }

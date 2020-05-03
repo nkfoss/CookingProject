@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms'
 import { RecipeService } from '../recipes.service';
+import { Recipe } from '../recipe.model';
 
 @Component({
   selector: 'app-edit-recipe',
@@ -14,7 +15,7 @@ import { RecipeService } from '../recipes.service';
 export class EditRecipeComponent implements OnInit {
 
   recipeForm: FormGroup;
-  id: number;
+  recipeId: number;
   editMode = false; // Inititally assume we are creating a new recipe
   // OnInit, we subscribe to the route params.
   // If there is an 'id' in the params, then the recipe is NOT new, and we are in editMode
@@ -22,13 +23,14 @@ export class EditRecipeComponent implements OnInit {
 
   // ==============================================================
 
-  constructor(private route: ActivatedRoute,
-    private recipeService: RecipeService) { }
+  constructor(private activatedRoute: ActivatedRoute,
+              private recipeService: RecipeService,
+              private router: Router) { }
 
   ngOnInit() {
-    this.route.params.subscribe(
+    this.activatedRoute.params.subscribe(
       (params: Params) => {
-        this.id = +params['id'];
+        this.recipeId = +params['id'];
         this.editMode = params['id'] != null;
         this.initForm();
       }
@@ -44,7 +46,7 @@ export class EditRecipeComponent implements OnInit {
     let recipeIngredients = new FormArray([]);
 
     if (this.editMode) {
-      const recipe = this.recipeService.getRecipe(this.id);
+      const recipe = this.recipeService.getRecipe(this.recipeId);
       recipeName = recipe.name;
       recipeImagePath = recipe.imagePath;
       recipeDescription = recipe.description;
@@ -72,7 +74,19 @@ export class EditRecipeComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.recipeForm);
+    // This is not necessary since our form has the same structure as a recipe object
+    // const recipe = new Recipe(
+    //   this.recipeForm.value['name'],
+    //   this.recipeForm.value['description'],
+    //   this.recipeForm.value['imagePath'],
+    //   this.recipeForm.value['ingredients']
+    // )
+    if (this.editMode) {
+      this.recipeService.updateRecipe(this.recipeId, this.recipeForm.value)
+    } else {
+      this.recipeService.addRecipe(this.recipeForm.value)
+    }
+    this.router.navigate(['../'], {relativeTo: this.activatedRoute})
   }
 
   onAddIngredient() {
@@ -83,6 +97,12 @@ export class EditRecipeComponent implements OnInit {
       })
     )
   }
+
+  onDeleteIngredient(index: number) {
+    ( <FormArray> this.recipeForm.get('ingredients')).removeAt(index);
+  }
+
+  onCancel() { this.router.navigate(['../'], {relativeTo: this.activatedRoute}) }
 
   get controls() {
     return (<FormArray> this.recipeForm.get('ingredients')).controls;

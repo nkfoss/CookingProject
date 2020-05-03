@@ -11,6 +11,7 @@ import { ShoppingListService } from '../ShoppingList/shopping-list.service';
 export class RecipeService {
 
   recipeSelected = new Subject<Recipe>();
+  recipesUpdated = new Subject<Recipe[]>();
 
   private recipes: Recipe[] = [
     new Recipe('Homemade chicken breast',
@@ -64,6 +65,21 @@ export class RecipeService {
 
   getRecipe(index: number)  {
     return this.recipes.slice()[index]
+  }
+
+  addRecipe(recipe: Recipe) {
+    this.recipes.push(recipe);
+    this.recipesUpdated.next( this.recipes.slice() )
+  }
+
+  updateRecipe(index: number, recipe: Recipe){
+    this.recipes[index] = recipe;
+    this.recipesUpdated.next( this.recipes.slice() )
+  }
+
+  deleteRecipe(index: number) {
+    this.recipes.splice(index, 1);
+    this.recipesUpdated.next( this.recipes.slice() )
   }
 
   addToShoppingList(ingredients: Ingredient[]) {

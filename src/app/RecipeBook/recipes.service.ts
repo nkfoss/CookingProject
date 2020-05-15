@@ -4,6 +4,7 @@ import { Subject } from 'rxjs';
 import { Recipe } from './recipe.model'
 import { Ingredient } from '../shared/ingredient.model';
 import { ShoppingListService } from '../ShoppingList/shopping-list.service';
+import { HttpClient } from '@angular/common/http';
 
 // ==============================================================
 
@@ -45,9 +46,18 @@ export class RecipeService {
 
   // ==============================================================
 
-  constructor(private shoppingListService: ShoppingListService) { }
+  constructor(private shoppingListService: ShoppingListService, private http: HttpClient) { }
 
   // ==============================================================
+
+  storeRecipes() {
+    this.http.put(
+      'https://cooking-project-6da97.firebaseio.com/recipes.json',
+      this.recipes )
+      .subscribe( response => {
+        console.log(response)
+      })
+  }
 
   getRecipes() {
 

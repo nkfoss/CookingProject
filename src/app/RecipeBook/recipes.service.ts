@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 import { Recipe } from './recipe.model'
 import { Ingredient } from '../shared/ingredient.model';
@@ -56,30 +56,34 @@ export class RecipeService {
   storeRecipes() {
     this.http.put(
       'https://cooking-project-6da97.firebaseio.com/recipes.json',
-      this.recipes )
-      .subscribe( response => {
+      this.recipes)
+      .subscribe(response => {
         console.log(response)
       })
   }
 
   fetchRecipes() {
-    this.http
-    .get<Recipe[]>(
-      'https://cooking-project-6da97.firebaseio.com/recipes.json'
-    )
-    .pipe( map( recipes => {
-        return recipes.map( recipe => {
-          return {...recipe, ingredients: recipe.ingredients ? recipe.ingredients : []}
-          // This is done in case we fetch a recipe with no ingredients (which can cause errors when we fetch)
-          // Basically, for each recipe in recipes, if recipe.ingredients is truish, then set it normally.
-          // otherwise, make it an empty array (otherwise it will be null which is bad)
+    return this.http
+      .get<Recipe[]>(
+        'https://cooking-project-6da97.firebaseio.com/recipes.json'
+      )
+      .pipe(
+        map(recipes => {
+          return recipes.map(recipe => {
+            return {
+              ...recipe, ingredients: recipe.ingredients ? recipe.ingredients : []
+            };
+            // This is done in case we fetch a recipe with no ingredients (which can cause errors when we fetch)
+            // Basically, for each recipe in recipes, if recipe.ingredients is truish, then set it normally.
+            // otherwise, make it an empty array (otherwise it will be null which is bad)
+          });
+        }),
+        tap(fetchedRecipes => {
+          console.log(fetchedRecipes)
+          this.recipes = fetchedRecipes
+          this.recipesUpdated.next(this.recipes.slice())
         })
-    }))
-    .subscribe( fetchedRecipes => {
-      console.log(fetchedRecipes)
-      this.recipes = fetchedRecipes
-      this.recipesUpdated.next( this.recipes.slice() )
-    })
+      )
   }
 
   getRecipes() {
@@ -96,23 +100,23 @@ export class RecipeService {
 
   }
 
-  getRecipe(index: number)  {
+  getRecipe(index: number) {
     return this.recipes.slice()[index]
   }
 
   addRecipe(recipe: Recipe) {
     this.recipes.push(recipe);
-    this.recipesUpdated.next( this.recipes.slice() )
+    this.recipesUpdated.next(this.recipes.slice())
   }
 
-  updateRecipe(index: number, recipe: Recipe){
+  updateRecipe(index: number, recipe: Recipe) {
     this.recipes[index] = recipe;
-    this.recipesUpdated.next( this.recipes.slice() )
+    this.recipesUpdated.next(this.recipes.slice())
   }
 
   deleteRecipe(index: number) {
     this.recipes.splice(index, 1);
-    this.recipesUpdated.next( this.recipes.slice() )
+    this.recipesUpdated.next(this.recipes.slice())
   }
 
   addToShoppingList(ingredients: Ingredient[]) {

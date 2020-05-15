@@ -8,6 +8,7 @@ import { EditRecipeComponent } from './RecipeBook/edit-recipe/edit-recipe.compon
 import { EditShoppingListComponent } from './ShoppingList/edit-shopping-list/edit-shopping-list.component'
 import { NotFoundComponent } from './not-found/not-found.component'
 import { RecipeStartComponent } from './RecipeBook/recipe-start/recipe-start.component'
+import { RecipesResolverService } from './RecipeBook/recipes-resolver.service'
 
 // ==========================================================
 
@@ -18,8 +19,8 @@ const appRoutes: Routes = [
     children: [
         { path: '', component: RecipeStartComponent },
         { path: 'new', component: EditRecipeComponent },
-        { path: ':id', component: RecipeDetailComponent},
-        { path: ':id/edit', component: EditRecipeComponent }
+        { path: ':id', component: RecipeDetailComponent, resolve: [RecipesResolverService]},
+        { path: ':id/edit', component: EditRecipeComponent, resolve: [RecipesResolverService] }
     ]},
 
     // Also make sure dynamic parameters come after static paramter routes

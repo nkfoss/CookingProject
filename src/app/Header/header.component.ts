@@ -18,6 +18,7 @@ export class HeaderComponent {
     }
 
     onFetchData() {
-        this.recipeService.fetchRecipes()
+        this.recipeService.fetchRecipes().subscribe()
+        // Really the only reason we subscribe here is because the service is returning the response, so that the resolver can handle it.
     }
 }

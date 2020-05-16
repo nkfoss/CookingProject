@@ -9,6 +9,7 @@ import { EditShoppingListComponent } from './ShoppingList/edit-shopping-list/edi
 import { NotFoundComponent } from './not-found/not-found.component'
 import { RecipeStartComponent } from './RecipeBook/recipe-start/recipe-start.component'
 import { RecipesResolverService } from './RecipeBook/recipes-resolver.service'
+import { AuthComponent } from './auth/auth.component'
 
 // ==========================================================
 
@@ -30,6 +31,8 @@ const appRoutes: Routes = [
         { path: "edit", component: EditShoppingListComponent } ]
     },
 
+    { path: 'auth', component: AuthComponent},
+    
     { path: 'not-found', component: NotFoundComponent},
     { path: '**', redirectTo: '/recipes'}
 ]

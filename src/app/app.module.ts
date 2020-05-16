@@ -18,6 +18,7 @@ import { RecipeService } from './RecipeBook/recipes.service'
 import { AppRoutingModule } from './app-routing.module';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { RecipeStartComponent } from './RecipeBook/recipe-start/recipe-start.component';
+import { AuthComponent } from './auth/auth.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { RecipeStartComponent } from './RecipeBook/recipe-start/recipe-start.com
     RecipesComponent,
     NotFoundComponent,
     DropdownDirective,
-    RecipeStartComponent
+    RecipeStartComponent,
+    AuthComponent
   ],
   imports: [
     BrowserModule,

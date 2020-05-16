@@ -19,6 +19,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { RecipeStartComponent } from './RecipeBook/recipe-start/recipe-start.component';
 import { AuthComponent } from './auth/auth.component';
+import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component'
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { AuthComponent } from './auth/auth.component';
     NotFoundComponent,
     DropdownDirective,
     RecipeStartComponent,
-    AuthComponent
+    AuthComponent,
+    LoadingSpinnerComponent
   ],
   imports: [
     BrowserModule,

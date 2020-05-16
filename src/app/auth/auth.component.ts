@@ -15,6 +15,7 @@ export class AuthComponent{
 
     isLoginMode = true;
     isLoading = false;
+    error: string = null;
 
     onSwitchMode() { 
         this.isLoginMode = !this.isLoginMode
@@ -34,6 +35,7 @@ export class AuthComponent{
                 console.log(resData)
             }, error => {
                 this.isLoading = false;
+                this.error = "An error occurred"
                 console.log(error)
             })
         }

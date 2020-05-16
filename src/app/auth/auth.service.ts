@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import credentials from '../../../credentials/credentials.json';
+import { catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 interface AuthResponseData {   // We define the interface here, since we only need it here. Also, interface's are good practice.
     // This is the response payload's structure.
@@ -31,7 +33,17 @@ signUp(email: string, password: string) {
             returnSecureToken: true
             // This is the structure of the request payload
         }
-    );
+    ).pipe(catchError(errorRes => {
+        let errorMessage = "An unknown error occurred"
+        if (!errorRes.error || !errorRes.error.error) {
+            return throwError(errorMessage)
+        }
+        switch (errorRes.error.error.message) {
+            case 'EMAIL_EXISTS':
+                errorMessage = "This email already exists"
+        }
+        return throwError(errorMessage)
+    }))
     
 }
 

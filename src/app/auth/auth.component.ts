@@ -33,10 +33,9 @@ export class AuthComponent{
             this.authService.signUp(form.value.email, form.value.password).subscribe( resData => {
                 this.isLoading = false;
                 console.log(resData)
-            }, error => {
+            }, errorMessage => {
                 this.isLoading = false;
-                this.error = "An error occurred"
-                console.log(error)
+                console.log(errorMessage)
             })
         }
         form.reset(); // Always reset the form.

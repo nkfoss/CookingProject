@@ -3,8 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 import credentials from '../../../credentials/credentials.json';
 import { catchError, tap } from 'rxjs/operators';
-import { throwError, Subject } from 'rxjs';
-import { EmailValidator } from '@angular/forms';
+import { throwError, BehaviorSubject } from 'rxjs';
 import { User } from './user.model';
 
 export interface AuthResponseData {   // We define the interface here, since we only need it here. Also, interface's are good practice.
@@ -22,7 +21,8 @@ export interface AuthResponseData {   // We define the interface here, since we 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
-    userSubject = new Subject<User>();
+    userSubject = new BehaviorSubject<User>(null);
+    // Behavior subjects give us access to the previous value before something subscribed to it
 
     constructor(private http: HttpClient) { }
 

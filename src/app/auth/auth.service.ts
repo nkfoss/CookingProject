@@ -109,6 +109,7 @@ export class AuthService {
     logout() {
         this.userSubject.next(null);
         this.router.navigate(['/auth']);
+        localStorage.removeItem('userData')
     }
 
 

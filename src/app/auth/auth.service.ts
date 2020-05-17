@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-
 import credentials from '../../../credentials/credentials.json';
 import { catchError, tap } from 'rxjs/operators';
 import { throwError, BehaviorSubject } from 'rxjs';
@@ -9,7 +8,7 @@ import { Router } from '@angular/router';
 
 // ====================================================================================================
 
-export interface AuthResponseData {   
+export interface AuthResponseData {
     // We define the interface for response data, since we only need it int his service. Also, interfaces are good practice.
     // This is the response payload's structure. There are optional fields, because the exact structure depends on what request is being responded to.
     // https://firebase.google.com/docs/reference/rest/auth#section-sign-in-email-password
@@ -17,7 +16,7 @@ export interface AuthResponseData {
     idToken: string,
     email: string,
     refreshToken: string,
-    expiresin: string,
+    expiresIn: string,
     localid: string,
     registered?: boolean
 }
@@ -37,7 +36,6 @@ export class AuthService {
     // ====================================================================================================
 
     signUp(email: string, password: string) {
-
         const API_KEY = credentials.firebaseAPI;
         console.log(API_KEY);
         return this.http.post<AuthResponseData>(
@@ -50,10 +48,10 @@ export class AuthService {
                 // This is the structure of the request payload
             }
         ).pipe(catchError(this.handleErrorResponse), tap(resData => {
-            this.handleAuthentication(resData.email, resData.localid, resData.idToken, +resData.expiresin)
+            this.handleAuthentication(resData.email, resData.localid, resData.idToken, +resData.expiresIn)
         }))
-
     }
+
 
     private handleAuthentication(email: string, userId: string, token: string, expiresIn: number) {
         const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
@@ -66,7 +64,9 @@ export class AuthService {
             expirationDate
         );
         this.userSubject.next(user);
+        localStorage.setItem('userData', JSON.stringify(user)) // We turn the JS object to a string.
     }
+
 
     signIn(email: string, password: string) {
         const API_KEY = credentials.firebaseAPI;
@@ -78,16 +78,39 @@ export class AuthService {
                 returnSecureToken: true
             }
         ).pipe(catchError(this.handleErrorResponse), tap(resData => {
-            this.handleAuthentication(resData.email, resData.localid, resData.idToken, +resData.expiresin)
+            this.handleAuthentication(resData.email, resData.localid, resData.idToken, +resData.expiresIn)
         }
         ))
-
     }
+
+
+    autoSignIn() {
+        const userData: {
+            email: string,
+            id: string;
+            _token: string;
+            _tokenExpirationDate: string;
+        } = JSON.parse(localStorage.getItem('userData'));
+
+        if (!userData) { return; }
+
+        const loadedUser = new User(
+            userData.email,
+            userData.id,
+            userData._token,
+            new Date(userData._tokenExpirationDate)
+        );
+        if (loadedUser.token) {
+            this.userSubject.next(loadedUser);
+        }
+    }
+
 
     logout() {
         this.userSubject.next(null);
         this.router.navigate(['/auth']);
     }
+
 
     private handleErrorResponse(errorRes: HttpErrorResponse) {
         let errorMessage = "An unknown error occurred"

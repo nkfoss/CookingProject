@@ -5,8 +5,12 @@ import credentials from '../../../credentials/credentials.json';
 import { catchError, tap } from 'rxjs/operators';
 import { throwError, BehaviorSubject } from 'rxjs';
 import { User } from './user.model';
+import { Router } from '@angular/router';
 
-export interface AuthResponseData {   // We define the interface here, since we only need it here. Also, interface's are good practice.
+// ====================================================================================================
+
+export interface AuthResponseData {   
+    // We define the interface for response data, since we only need it int his service. Also, interfaces are good practice.
     // This is the response payload's structure. There are optional fields, because the exact structure depends on what request is being responded to.
     // https://firebase.google.com/docs/reference/rest/auth#section-sign-in-email-password
     kind?: string,
@@ -18,13 +22,19 @@ export interface AuthResponseData {   // We define the interface here, since we 
     registered?: boolean
 }
 
+// ====================================================================================================
+
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
     userSubject = new BehaviorSubject<User>(null);
     // Behavior subjects give us access to the previous value before something subscribed to it
 
-    constructor(private http: HttpClient) { }
+    // ====================================================================================================
+
+    constructor(private http: HttpClient, private router: Router) { }
+
+    // ====================================================================================================
 
     signUp(email: string, password: string) {
 
@@ -72,6 +82,11 @@ export class AuthService {
         }
         ))
 
+    }
+
+    logout() {
+        this.userSubject.next(null);
+        this.router.navigate(['/auth']);
     }
 
     private handleErrorResponse(errorRes: HttpErrorResponse) {

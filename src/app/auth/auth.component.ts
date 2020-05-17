@@ -4,20 +4,24 @@ import { AuthService, AuthResponseData } from './auth.service';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 
-
-
-
 @Component({
     selector: 'app-auth',
     templateUrl: './auth.component.html'
 })
-export class AuthComponent{
 
-    constructor(private authService: AuthService, private router: Router) {}
+// ====================================================================================================
+
+export class AuthComponent{
 
     isLoginMode = true;
     isLoading = false;
     error: string = null;
+
+    // ====================================================================================================
+
+    constructor(private authService: AuthService, private router: Router) {}
+
+    // ====================================================================================================
 
     onSwitchMode() { 
         this.isLoginMode = !this.isLoginMode

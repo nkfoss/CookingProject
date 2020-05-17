@@ -36,35 +36,27 @@ export class RecipeService {
   }
 
   fetchRecipes() {
-    return this.authService.userSubject.pipe(
-      take(1), exhaustMap(user => {
-        // ^ Take says we only want to take 1 value from the obeservable, and then unsubscribe
-        // Exhaust waits for the first observable to compelete (which happens when we 'take')...
-        // then it gives us the user, and return a new observable to replace the previous one in the entire observable chain.
-        return this.http
-          .get<Recipe[]>(
-            'https://cooking-project-6da97.firebaseio.com/recipes.json',
-            {
-              params: new HttpParams().set('auth', user.token)
-            }
-          );
-      }),
-      map(recipes => {
-        return recipes.map(recipe => {
-          return {
-            ...recipe, ingredients: recipe.ingredients ? recipe.ingredients : []
-          };
-          // This is done in case we fetch a recipe with no ingredients (which can cause errors when we fetch)
-          // Basically, for each recipe in recipes, if recipe.ingredients is truish, then set it normally.
-          // otherwise, make it an empty array (otherwise it will be null which is bad)
-        });
-      }),
-      tap(fetchedRecipes => {
-        console.log(fetchedRecipes)
-        this.recipes = fetchedRecipes
-        this.recipesUpdated.next(this.recipes.slice())
-      })
-    );
+
+    return this.http
+      .get<Recipe[]>(
+        'https://cooking-project-6da97.firebaseio.com/recipes.json'
+      ).pipe(
+        map(recipes => {
+          return recipes.map(recipe => {
+            return {
+              ...recipe, ingredients: recipe.ingredients ? recipe.ingredients : []
+            };
+            // This is done in case we fetch a recipe with no ingredients (which can cause errors when we fetch)
+            // Basically, for each recipe in recipes, if recipe.ingredients is truish, then set it normally.
+            // otherwise, make it an empty array (otherwise it will be null which is bad)
+          });
+        }),
+        tap(fetchedRecipes => {
+          console.log(fetchedRecipes)
+          this.recipes = fetchedRecipes
+          this.recipesUpdated.next(this.recipes.slice())
+        })
+      );
   }
 
   getRecipes() {

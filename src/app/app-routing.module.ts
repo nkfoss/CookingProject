@@ -34,7 +34,7 @@ const appRoutes: Routes = [
     { path: 'auth', component: AuthComponent},
     
     { path: 'not-found', component: NotFoundComponent},
-    { path: '**', redirectTo: '/recipes'}
+    { path: '**', redirectTo: '/'}
 ]
 
 // ==========================================================

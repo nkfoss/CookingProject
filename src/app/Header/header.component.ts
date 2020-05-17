@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { RecipeService } from '../RecipeBook/recipes.service'
+import { AuthService } from '../auth/auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-header',
@@ -9,9 +11,22 @@ import { RecipeService } from '../RecipeBook/recipes.service'
 
 // =============================================================
 
-export class HeaderComponent {
+export class HeaderComponent implements OnInit, OnDestroy {
 
-    constructor(private recipeService: RecipeService) {}
+    private userSub: Subscription;
+    isAuthenticated = false;
+
+    constructor(private recipeService: RecipeService, private authService: AuthService) {}
+
+    ngOnInit() {
+        this.userSub = this.authService.userSubject.subscribe(user => {
+            this.isAuthenticated = !user ? false : true;
+        })
+    }
+
+    ngOnDestroy() {
+        this.userSub.unsubscribe();
+    }
 
     onSaveData() {
         this.recipeService.storeRecipes()

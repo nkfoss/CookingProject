@@ -29,6 +29,9 @@ export class AuthService {
     userSubject = new BehaviorSubject<User>(null);
     // Behavior subjects give us access to the previous value before something subscribed to it
 
+    private tokenExpirationTimer: any;
+    // For use with the auto logout /  token timeout.
+
     // ====================================================================================================
 
     constructor(private http: HttpClient, private router: Router) { }
@@ -63,7 +66,11 @@ export class AuthService {
             token,
             expirationDate
         );
-        this.userSubject.next(user);
+        // Update all user subscriptions and check the expiry token for autoLogout()
+        this.userSubject.next(user); 
+        this.autoLogout(expiresIn * 1000) // 1000 for ms
+
+        // Finally, set the userData in localStorage.
         localStorage.setItem('userData', JSON.stringify(user)) // We turn the JS object to a string.
     }
 
@@ -85,14 +92,16 @@ export class AuthService {
 
 
     autoSignIn() {
+
+        // Define the userData object. 
         const userData: {
             email: string,
             id: string;
             _token: string;
             _tokenExpirationDate: string;
         } = JSON.parse(localStorage.getItem('userData'));
+        if (!userData) { return; } // If it's empty, return.
 
-        if (!userData) { return; }
 
         const loadedUser = new User(
             userData.email,
@@ -102,14 +111,30 @@ export class AuthService {
         );
         if (loadedUser.token) {
             this.userSubject.next(loadedUser);
+            const expirationDuration = new Date(userData._tokenExpirationDate).getTime() - new Date().getTime() // getTime() converts Date to milliseconds
+            this.autoLogout(expirationDuration);
         }
     }
 
 
+    autoLogout(expirationDuration: number) {
+        this.tokenExpirationTimer = setTimeout(() => {
+            this.logout();
+        }, expirationDuration)
+    }
+
+
     logout() {
+        // Clean-up user data
         this.userSubject.next(null);
+        localStorage.removeItem('userData');
+
+        // Redirect to login page
         this.router.navigate(['/auth']);
-        localStorage.removeItem('userData')
+
+        // Make sure the token expiration timer is reset.
+        if (this.tokenExpirationTimer) { clearTimeout(this.tokenExpirationTimer) }
+        this.tokenExpirationTimer = null;
     }
 
 

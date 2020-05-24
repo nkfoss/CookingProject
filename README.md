@@ -39,4 +39,12 @@ Since the access token can expire, we should account for that.
 We set a timeout that calls logout() automcatically after time has expired.
 2. Whenever we emit a new user object to our app, we need to call autoLogout(). This happens in handleAuthentication (which is a subroutine of signUp and signIn) and autoLogin().
 
+### Auth Guard
+
+We need to make sure users cannot access recipes without being logged in. Our AuthGuard will handle this. So we guard the recipes route (in the routing module) and
+then subscribe to the authService's user subject (but only once, since we only need to check it once). If the user object is true-ish, we continue. If not, then we redirect.
+
+
+
+
 

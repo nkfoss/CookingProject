@@ -1,27 +1,50 @@
-# Project
+### Setting up Authentication
+There are some changes you should make to your Firebase realtime database rules. Instead of simply using read/write: true/false, we are going to need to do something authentication-based.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.21.
+```
+{
+    "rules" : {
+        ".read" : "auth != null",
+        ".write" : "auth != null"
+    }
+}
+```
 
-## Development server
+Now look to left... in the develop menu, select 'authentication'. Click on 'setup sign-in method', click email/password, and then enable it (but don't enable passwordless login). Then click save. The 'users' tab in authentication will then start to display the users when the sign-up.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+https://firebase.google.com/docs/reference/rest/auth
 
-## Code scaffolding
+^ This documentation will be useful moving forward. We are concerned with the sign-up/sign-in API methods (seen on the right). Observe the request/response payloads for both APIs. 
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-## Build
+### Auto-login
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+We store our access token in local-storage so we can persist our login.
 
-## Running unit tests
+1. In handleAuthentication(), we create our user object upon sign-in. 
+2. After creation and next-ing our user subject, we store the user object in local-storage.
+3. Next, we call autoLogin whenever the application starts. This method accesses local-storage to get the userData. If it doesn't exist, the method does nothing.
+If it exists, we create a loadedUser from the userData loaded from local-storage. 
+4. Then we check the token expiration... if it exists, then we can be sure that it is valid
+(because there is a method that sets the token, but will not if it's already expired). If valid, then we set current user to loadedUser.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Auto sign-in gets called whenever the app component is initialized. Of course, we clear the userData from local-storage whenever we logout.
 
-## Running end-to-end tests
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+### Auto-logout
 
-## Further help
+Since the access token can expire, we should account for that. 
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+1. When an access token is received, we set a timer for its expiration. Our autoLogout() method receives the time until the token expires.
+We set a timeout that calls logout() automcatically after time has expired.
+2. Whenever we emit a new user object to our app, we need to call autoLogout(). This happens in handleAuthentication (which is a subroutine of signUp and signIn) and autoLogin().
+
+### Auth Guard
+
+We need to make sure users cannot access recipes without being logged in. Our AuthGuard will handle this. So we guard the recipes route (in the routing module) and
+then subscribe to the authService's user subject (but only once, since we only need to check it once). If the user object is true-ish, we continue. If not, then we redirect.
+
+
+
+
+
